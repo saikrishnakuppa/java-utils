@@ -4,6 +4,7 @@ package org.javautils.orm;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -25,6 +26,15 @@ public class CoreMessageEventDaoImpl extends AbstractDbDao implements CoreMessag
 		return entityManager.find(MessageEvent.class, id);
 	}
 
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public List<MessageEvent> findByMessageId2(Long messageId) {
+		Query cb = entityManager.createQuery("select t from MessageEvent t where t.tradeIdGroup in "
+				+ " ( select t1.tradeIdGroup from MessageEvent t1 where t1.txmMessageId=:messageId)");
+		cb.setParameter("messageId", messageId);
+		return (List<MessageEvent>)cb.getResultList();
+	}
+	
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public List<MessageEvent> findByMessageId(Long messageId) {
@@ -159,6 +169,6 @@ public class CoreMessageEventDaoImpl extends AbstractDbDao implements CoreMessag
 //		MessageEvent savedMessageEvent = messageDao.save(messageEvent);
 //		System.out.println(messageDao.findById(savedMessageEvent.getTxmMessageId()));
 //		System.out.println(messageDao.findByTradeId(TradeId.markitwireId(22222)));
-		System.out.println(messageDao.findByMessageId(2l));
+		System.out.println(messageDao.findByMessageId(1l));
 	}
 }

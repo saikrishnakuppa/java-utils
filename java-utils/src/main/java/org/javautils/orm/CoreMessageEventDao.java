@@ -9,4 +9,5 @@ public interface CoreMessageEventDao {
 	public List<MessageEvent> findByTradeId(TradeId tradeId);
 	List<MessageEvent> query(MessageEventQuery query);
 	List<MessageEvent> findByMessageId(Long messageId);
+	List<MessageEvent> findByMessageId2(Long messageId);
 }
