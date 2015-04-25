@@ -34,6 +34,11 @@
 	</dependency>    
 	<dependency>
 		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>4.1.4.RELEASE</version>
+	</dependency>    
+	<dependency>
+		<groupId>org.springframework</groupId>
 		<artifactId>spring-context</artifactId>
 		<version>4.1.4.RELEASE</version>
 	</dependency>    
@@ -88,6 +93,7 @@
 		<plugin>
       		<groupId>org.apache.maven.plugins</groupId>
       		<artifactId>maven-compiler-plugin</artifactId>
+      		<version>3.3</version>
       		<configuration>
         		<compilerArgument>-proc:none</compilerArgument>
       		</configuration>
@@ -114,6 +120,69 @@
 				</dependency>
 			</dependencies>
   		</plugin>
+  		<!-- 
+  		<plugin>
+  			<groupId>org.dskovall</groupId>
+  			<artifactId>onejar-maven-plugin</artifactId>
+  			<configuration>
+  				<binlibs>
+  					<fileset>
+  						<directory>${nativelib.path}</directory>
+  						<includes>*.dll</includes>
+  					</fileset>
+  				</binlibs>
+  				<includeonly>
+  					<dependency>
+  						<groupId>xxx</groupId>
+  						<artifactId>tomcat-embedded</artifactId>
+  					</dependency>
+					<dependency>
+  						<groupId>mssql</groupId>
+  						<artifactId>sqljdbc4</artifactId>
+  					</dependency>  						
+  					<dependency>
+  						<groupId>log4j</groupId>
+  						<artifactId>log4j-nt</artifactId>
+  					</dependency>
+  				</includeonly>
+  				<resources>
+  					<fileSet>
+  						<excludes>
+  							<exclude>${project.build.finalName}/WEB-INF/lib/tomcat-embedded*</exclude>
+  							<exclude>${project.build.finalName}/WEB-INF/lib/servlet-api*</exclude>
+  							<exclude>${project.build.finalName}/WEB-INF/lib/log4j*</exclude>
+  							<exclude>${project.build.finalName}/WEB-INF/lib/sqljdbc*</exclude>
+  						</excludes>
+  					</fileSet>
+  				</resources>
+  			</configuration>
+  		</plugin>
+  		<plugin>
+  			<groupId>org.codehaus.mojo</groupId>
+  			<artifactId>exec-maven-plugin</artifactId>
+  			<version>1.2.1</version>
+  			<executions>
+  				<execution>
+  					<id>run-sample-web</id>
+  					<goals>exec</goals>
+  				</execution>
+  			</executions>
+  			<configuration>
+  				<executable>java</executable>
+  				<arguments>
+  					<argument>-Xmx512m</argument>
+  					<argument>-Xms128m</argument>
+  					<argument>-Xdebug</argument>
+  					<argument>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9132</argument>
+  					<argument>-DconfigLocation=${project.build.directory}/SimpleWeb-${local.config.version}-${project.version}.properties</argument>
+  					<argument>-Dtomcat.port=8505</argument>
+  					<argument>-Dlog4j.configuration=file:${project.build.directory}/$project.build.finalName}/log4j.xml</argument>
+  					<argument>-jar</argument>
+  					<argument>${project.build.directory}/$project.build.finalName}.${project.packaging}</argument>
+  				</arguments>
+  			</configuration>
+  		</plugin>
+  		 -->
   	</plugins>
   </build>  
 </project>
