@@ -10,10 +10,13 @@ import java.util.TimerTask;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +25,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class WebController extends AbstractWebController {
 
 	private final Map<String, PollResult> pollResults = new HashMap<String, PollResult>();
+	
+	@ModelAttribute("idTypes")
+	public String[] types() {
+		return new String[] {};
+	}
+	
+	@ModelAttribute("form1")
+	public Form1 form1() {
+		return new Form1();
+	}
+	
+	@ModelAttribute("form2")
+	public Form2 form2() {
+		return new Form2();
+	}
 	
 	@Autowired
 	@Resource(name="queueManagers")
@@ -52,12 +70,40 @@ public class WebController extends AbstractWebController {
 		}
 	}
 	
+	private void pollMqForDepth(QueueManager queueManager) {
+		
+	}
+	
 	@RequestMapping(value="/poll", method = RequestMethod.GET)
 	public @ResponseBody
 	Collection<PollResult> poll() {
 		return pollResults.values();
 	}
 
+	@RequestMapping(value="/action1", method = RequestMethod.GET)
+	public String action1(@ModelAttribute("form1") @Valid Form1 form1, BindingResult result, Model model) {
+		
+		if(result.hasErrors())
+			return "query";
+		
+		// process
+		model.addAttribute("results", "");
+		// return to results.jsp
+		return "results";
+	}
+	
+	@RequestMapping(value="/action2", method = RequestMethod.GET)
+	public String action1(@ModelAttribute("form2") @Valid Form2 form2, BindingResult result, Model model) {
+		
+		if(result.hasErrors())
+			return "query";
+		
+		// process
+		model.addAttribute("results", "");
+		// return to results.jsp
+		return "results";
+	}
+	
 	public static class PollResult {
 		private List<String> depths = new ArrayList<String>();
 		private String updated;
